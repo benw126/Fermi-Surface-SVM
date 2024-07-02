@@ -7,7 +7,7 @@ According to Pauli exclusion principle, there is one and only one fermion in a p
 
 Understanding the topology of the Fermi surface is important in condensed matter physics, which allows us to determine the electronic properties of a material. In this case, the Fermi surface is the level set of $(k_x, k_y)$ such that $-2(\cos k_x+\cos k_y) = E_f$. In this project, **we approximate the Fermi surface by Support Vector Machine (SVM) under different Fermi energy $E_f$.**
 
-## Band Dispersion
+## Energy Dispersion
 Let's take a look at the dispersion in Brillouin zone. 
 ```python
 import pandas as pd
