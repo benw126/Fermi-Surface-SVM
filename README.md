@@ -121,7 +121,7 @@ def approximation(E_f, N, figsize=(8, 6)):
     fig, ax = plt.subplots(figsize=figsize)
     
     # Fermi surface plot
-    ax.contour(X, Y, E(X,Y), levels  = [E_f], colors='k')
+    ax.contour(X, Y, E(X,Y), levels  = [E_f], colors='k', linestyles='solid')
     
     # Plot the SVM-based approximation of the Fermi surface
     grid_points = np.column_stack((X.flatten(), Y.flatten()))
