@@ -1,7 +1,7 @@
 # Approximation of Fermi Surface of 2D Hubbard Model by Support Vector Machine
 
 ## Introduction
-The two-dimensional Hubbard model has the following Hamiltonian: $$H=-t\mathop{\sum}\limits_{<i,j>\sigma}c_{i\sigma}^\dagger c_{j\sigma}+h.c.,$$ where $t$ is the hopping integral and $h.c.$ is the Hermitian conjugate term. By Fourier transform, the band dispersion is $E(k_x, k_y) = -2t(\cos k_x+\cos k_y)$, where $(k_x, k_y) \in [-\pi, \pi]^2$ in Brillouin zone. For simplicity, we take $t = 1$ as unit of energy.  
+The two-dimensional Hubbard model has the following Hamiltonian: $$H=-t\mathop{\sum}\limits_{<i,j>\sigma}c_{i\sigma}^\dagger c_{j\sigma}+h.c.,$$ where $t$ is the hopping integral and $h.c.$ is the Hermitian conjugate term. By Fourier transform, the energy dispersion is $E(k_x, k_y) = -2t(\cos k_x+\cos k_y)$, where $(k_x, k_y) \in [-\pi, \pi]^2$ in Brillouin zone. For simplicity, we take $t = 1$ as unit of energy.  
 
 According to Pauli exclusion principle, there is one and only one fermion in a particular quantum state. At zero temperature, fermions will occupy the lowest possible level of band. And the **Fermi surface is the surface in reciprocal lattice which separates occupied from unoccupied energy levels at zero temperature.** In other words, the Fermi surface is defined by the condition that the energy of the fermions is equal to the Fermi energy $E_f$. 
 
@@ -85,7 +85,7 @@ def occupancy_filter(E_f, k):
     states = np.where(occupancy,1.,-1.)
     return states
 ```
-**We define the following `approximation()` function to generate plot of approximation to the Fermi surface.** Note that `E_f` is Fermi energy and `N` is the number of fermions used to train our SVM model. The larger number of fermions, the better approximation to the Fermi surface. 
+We define the following **`approximation()`** function to generate a plot of approximation to the Fermi surface. Note that `E_f` is Fermi energy and `N` is the number of fermions used to train our SVM models. The larger the number of fermions, the better approximation to the Fermi surface. **The decision boundaries of our SVM models will be the approximation to the Fermi surface.** 
 ```python
 def approximation(E_f, N, figsize=(8, 6)):
     """
@@ -121,22 +121,13 @@ def approximation(E_f, N, figsize=(8, 6)):
     fig, ax = plt.subplots(figsize=figsize)
     
     # Fermi surface plot
-    ax.contour(X, Y, E(X,Y), levels =[E_f], colors='c')
+    ax.contour(X, Y, E(X,Y), levels  = [E_f], colors='k')
     
     # Plot the SVM-based approximation of the Fermi surface
     grid_points = np.column_stack((X.flatten(), Y.flatten()))
     grid_labels = svm.predict(grid_points).reshape(X.shape)
-    with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="No contour levels were found within the data range.")
-        ax.contour(X, Y, grid_labels, levels = [E_f], colors='k')
-    
-    # Plot the N points with their occupancy
-    ax.scatter(df['k_x'][df['occupancy'] == 1], df['k_y'][df['occupancy'] == 1], s = 5, c='b',label='Filled')
-    ax.scatter(df['k_x'][df['occupancy'] == -1], df['k_y'][df['occupancy'] == -1], s = 5,  c='r',label='Unfilled')
-    ax.set_xlabel('$k_x$')
-    ax.set_ylabel('$k_y$')
-    ax.set_title(f'Approximation of Fermi Surface by SVM with $E_f = {E_f}$')
-    
+    ax.contourf(X, Y, grid_labels, cmap = 'coolwarm_r')
+        
     # Set the x-axis ticks 
     xticks = [-np.pi, -np.pi/2, 0, np.pi/2, np.pi]
     ax.set_xticks(xticks)
@@ -148,10 +139,8 @@ def approximation(E_f, N, figsize=(8, 6)):
     ax.set_yticklabels([r'$-\pi$', r'$-\pi/2$', r'$0$', r'$\pi/2$', r'$\pi$'])
 
     # Add the legend
-    old_handles, labels = ax.get_legend_handles_labels()
-    legend_elements = [Line2D([0], [0], color='c', lw=1, label='Fermi surface'),
-                           Line2D([0], [0], color='k', lw=1, label='Approximation')]
-    plt.legend(handles=old_handles + legend_elements, loc=(1.05, 0.3))
+    legend_elements = [Line2D([0], [0], color='k', lw=1, label='Fermi surface')]
+    plt.legend(handles = legend_elements, loc=(1.05, 0.7))
     
     ax.margins(x=0, y=0)
     plt.show()
