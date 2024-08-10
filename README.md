@@ -1,10 +1,10 @@
 # Approximation of Fermi Surface of 2D Hubbard Model by Support Vector Machine
 
 ## Introduction
-The two-dimensional Hubbard model has the following Hamiltonian: 
-
-$$H=-t\mathop{\sum}\limits_{<i,j>\sigma}c_{i\sigma}^\dagger c_{j\sigma}+h.c.,$$
-
+The two-dimensional Hubbard model has the following Hamiltonian:
+```math 
+H=-t\mathop{\sum}\limits_{<i,j>\sigma}c_{i\sigma}^\dagger c_{j\sigma}+h.c.,
+``` 
 where $t$ is the hopping integral and $h.c.$ is the Hermitian conjugate term. By Fourier transform, the energy dispersion is $E(k_x, k_y) = -2t(\cos k_x+\cos k_y)$, where $(k_x, k_y) \in [-\pi, \pi]^2$ in Brillouin zone. For simplicity, we take $t = 1$ as unit of energy.  
 
 According to Pauli exclusion principle, there is one and only one fermion in a particular quantum state. At zero temperature, fermions will occupy the lowest possible level of band. And the **Fermi surface is the surface in reciprocal lattice which separates occupied from unoccupied energy levels at zero temperature.** In other words, the Fermi surface is defined by the condition that the energy of the fermions is equal to the Fermi energy $E_f$. 
